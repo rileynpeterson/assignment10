@@ -1,0 +1,78 @@
+
+<!doctype html>
+
+<html>
+   
+<head>
+	<title>Public Holidays API</title>
+    
+	<meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="holidaystyles.css">
+	<script>
+      
+
+        //layout taken from get_weather_ajax from class
+		function getHoliday() {
+			/* Step 1: Make instance of request object...
+			...to make HTTP request after page is loaded*/
+			request = new XMLHttpRequest();
+			
+            request.open('GET', 'https://goweather.herokuapp.com/weather/Hartford', true);
+			// Step 2: set up event handler/callback
+			request.onreadystatechange = function(){
+                if (request.readyState == 4){
+                    if (request.status == 200){
+                         weather = JSON.parse(request.responseText);
+                         today = weather['temperature'];
+                         forecast = weather['forecast'];
+                         strHTML = "";
+                
+                        forecast.forEach(function(day) { 
+                            strHTML +="Day: " + day.day + "<br>Temp: " + day.temperature + "<br>Wind: " + day.wind + "<br><br>";
+                        })
+                        document.getElementById("today").innerHTML = today;
+
+                        document.getElementById("data").innerHTML = strHTML;
+                        
+                    } else {
+                        console.log("Status error: " + request.status);
+                    }
+                } else {
+                    console.log("Ignored readyState: " + request.readyState);
+                }
+            }
+
+            
+            request.send();
+		}
+        
+	</script>
+</head>
+
+
+<body onload="getHoliday()">
+
+	<h1 style = "color: #ec2727;">Hartford Weather</h1>
+    <h2>Today:<br></h2>
+    <div id="today">Today's Weather...</div>
+    <h2><br>Forecast:</h2>
+	<div id="data">Loading...</div>
+    <div id = "questions"> 
+        <h2>Describe the API you selected and what it does:</h2>
+        <p>The API that I selected consists of a list of current weather for a specific City<br></p>
+        <h2>Cite the website where you found it:</h2>
+        <p style = "text-decoration: none;">https://github.com/public-apis/public-apis#weather<br></p>
+        <h2>Describe the options you used for the API request:</h2>
+        <p>I used the {City} option by including the city as Hartford<br></p>
+        <h2>Give two applications where this API would be helpful:</h2>
+        <ol >
+            <p>1.&nbsp;This API would be helpful for sports teams in the area to update their website for game delays</p>
+            <p>2.&nbsp;This API would be helpful for any hotel app looking to update people on what the weather would be like during their stay (if it is within the
+                three days of the forecast)</p>
+        </ol>
+
+
+    </div>
+    
+</body>
+</html>
